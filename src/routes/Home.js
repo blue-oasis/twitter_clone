@@ -1,9 +1,10 @@
 import { useEffect, useState } from "react";
 import { addDoc, collection, getDocs } from "firebase/firestore";
 import { dbService } from "../fbase";
-import { async } from "@firebase/util";
 
-const Home = () => {
+
+const Home = ({ userObj }) => {
+    console.log(userObj);
     const [tweet, setTweet] = useState(""); //텍스트를 상태로 관리하기 위해 useState 사용
     const [tweets, setTweets] = useState([]);
 
@@ -26,6 +27,7 @@ const Home = () => {
         await addDoc(collection(dbService ,"tweets"), {
             text: tweet,
             createdAt: Date.now(),
+            createId: userObj.uid,
         });
        setTweet("");
     };

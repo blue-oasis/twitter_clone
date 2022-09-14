@@ -4,7 +4,7 @@ import Home from "../routes/Home";
 import Navigation from "./Navigation";
 import Profile from "../routes/Profile";
 
-const AppRouter = ({isLoggedIn}) => {
+const AppRouter = ({isLoggedIn, userObj}) => {
 // && => js and연산자 왼쪽 조건 ture면 오른쪽 값 반환
     return (
         <Router>
@@ -13,7 +13,7 @@ const AppRouter = ({isLoggedIn}) => {
                 {isLoggedIn ? ( //삼항연산자
                     <>
                     <Route exact path="/">
-                        <Home />
+                        <Home userObj={userObj} />
                     </Route>
                     <Route exact path="/profile">
                         <Profile />
