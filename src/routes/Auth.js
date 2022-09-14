@@ -26,7 +26,7 @@ const Auth = () => {
        }
     };
     // 데이터 전송 시간 소요되므로 async , await 사용
-    const onSunmit = async (event) => {
+    const onSubmit = async (event) => {
         event.preventDefault(); // submit시 새로고침 방지
         
         try {
@@ -64,7 +64,7 @@ const Auth = () => {
 
     return (
         <div>
-            <form onSubmit={onSunmit}>
+            <form onSubmit={onSubmit}>
                 <input name="email" type="email" placeholder="Email" required 
                     value={email} onChange={onChange} />
                 <input name="password" type="password" placeholder="Password" required

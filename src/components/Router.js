@@ -10,7 +10,7 @@ const AppRouter = ({isLoggedIn}) => {
         <Router>
             {isLoggedIn && <Navigation />} 
             <Switch>
-                {isLoggedIn ? (
+                {isLoggedIn ? ( //삼항연산자
                     <>
                     <Route exact path="/">
                         <Home />
@@ -24,6 +24,7 @@ const AppRouter = ({isLoggedIn}) => {
                         <Auth />
                     </Route>
                 )}
+               {/* <Redirect from="*" to="/" /> from 프롭스에서 스위치 내부의 route조건이 다 맞지않으면 to 주소로 이동 */}
             </Switch>
         </Router>
     );

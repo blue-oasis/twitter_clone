@@ -1,6 +1,7 @@
 // Import the functions you need from the SDKs you need
 import { initializeApp } from "firebase/app";
 import { getAuth } from "firebase/auth";
+import { getFirestore } from "firebase/firestore";
 // firebase 9 버전 되면서 import 방법 바뀜 !!! 
 // import firebase from "firebase/app" 대신 위에꺼
 
@@ -21,3 +22,4 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 export const firebaseInstance = getAuth();
 export const authService = getAuth();
+export const dbService = getFirestore();
