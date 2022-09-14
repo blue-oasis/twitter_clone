@@ -1,16 +1,24 @@
 import {HashRouter as Router, Route, Switch} from "react-router-dom";
 import Auth from "../routes/Auth";
 import Home from "../routes/Home";
+import Navigation from "./Navigation";
+import Profile from "../routes/Profile";
 
 const AppRouter = ({isLoggedIn}) => {
-
+// && => js and연산자 왼쪽 조건 ture면 오른쪽 값 반환
     return (
         <Router>
+            {isLoggedIn && <Navigation />} 
             <Switch>
                 {isLoggedIn ? (
+                    <>
                     <Route exact path="/">
                         <Home />
                     </Route>
+                    <Route exact path="/profile">
+                        <Profile />
+                    </Route>
+                    </>
                 ) : (
                     <Route exact path="/">
                         <Auth />

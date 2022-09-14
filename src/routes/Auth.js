@@ -1,9 +1,13 @@
 import { useState } from "react";
-import { authService } from "../fbase";
+import { authService, firebaseInstance } from "../fbase";
 import {
     createUserWithEmailAndPassword,
     signInWithEmailAndPassword,
+    signInWithPopup,
+    GoogleAuthProvider,
+    GithubAuthProvider,
   } from "firebase/auth";
+import { async } from "@firebase/util";
 
 const Auth = () => {
     const [email, setEmail] = useState("");
@@ -15,7 +19,7 @@ const Auth = () => {
        const {
         target: {name, value},
        } = event;
-       if (name == "email") {
+       if (name === "email") {
         setEmail(value);
        } else if (name === "password") {
         setPassword(value);
@@ -44,9 +48,19 @@ const Auth = () => {
 
     const toggleAccount = () => setNewAccount((prev) => !prev);
 
-    const onSocialClick = (event) => { // 소셜로그인 분기
-        console.log(event.target.name);
-    }
+    const onSocialClick = async (event) => { // 소셜로그인 분기 구현
+        const {
+            target: {name},
+        } = event;
+        let provider; // 소셜 로그인 서비스 제공용
+        if(name === "google"){
+            provider = new GoogleAuthProvider();
+        } else if (name === "github"){
+            provider = new GithubAuthProvider();
+        }
+        const data = await signInWithPopup(authService, provider); //소셜로그인 처리
+        console.log(data);
+    };
 
     return (
         <div>
