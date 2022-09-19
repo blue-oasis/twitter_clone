@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
-import { addDoc, collection, getDocs } from "firebase/firestore";
+import { addDoc, collection, getDocs, onSnapshot } from "firebase/firestore";
 import { dbService } from "../fbase";
+import Tweet from "../components/Tweet";
 
 
 const Home = ({ userObj }) => {
@@ -8,19 +9,24 @@ const Home = ({ userObj }) => {
     const [tweet, setTweet] = useState(""); //텍스트를 상태로 관리하기 위해 useState 사용
     const [tweets, setTweets] = useState([]);
 
-    const getTweets = async () => {
+   /* const getTweets = async () => {
         const dbTweets = await getDocs(collection(dbService, "tweets"));
         
         dbTweets.forEach((document) => {
         const tweetObject = { ...document.data(), id: document.id };
         setTweets((prev) => [tweetObject, ...prev]) //전개 구문으로 데이터 순서대로 쌓기
         });         //prev에 순회 이전의 상태가 넘어옴, 새 데이터와 합쳐서 저장
-    };
+    }; onSnapshot 적용 위해 주석처리 */
 
     useEffect(() => {
-        getTweets();
+        onSnapshot(collection(dbService, "tweets"), (snapshot) => {
+            const newArray = snapshot.docs.map((document) => ({
+                id: document.id,
+                ...document.data(),
+            }));
+            setTweets(newArray);
+        });
     }, []);
-
 
     const onSubmit = async (event) => { //원래의 이벤트 방지(새로고침 방지)
         event.preventDefault();
@@ -54,9 +60,10 @@ const Home = ({ userObj }) => {
         </form>
         <div>
             {tweets.map((tweet) => (
-                <div key={tweet.id}>
-                    <h4>{tweet.text}</h4>
-                </div>
+                <Tweet key={tweet.id} 
+                tweetObj={tweet}
+                isOwner={tweet.createId === userObj.uid}
+                />
             ))}
         </div>
         </>
