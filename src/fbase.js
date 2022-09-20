@@ -2,7 +2,7 @@
 import { initializeApp } from "firebase/app";
 import { getAuth } from "firebase/auth";
 import { getFirestore } from "firebase/firestore";
-import "firebase/storage";
+import {getStorage} from "firebase/storage";
 // firebase 9 버전 되면서 import 방법 바뀜 !!! 
 // import firebase from "firebase/app" 대신 위에꺼
 
@@ -24,4 +24,4 @@ const app = initializeApp(firebaseConfig);
 export const firebaseInstance = getAuth();
 export const authService = getAuth();
 export const dbService = getFirestore();
-export const storageServise = firebase.storage();
+export const storageService = getStorage(app);

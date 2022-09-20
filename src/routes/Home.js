@@ -1,9 +1,9 @@
 import { useEffect, useState } from "react";
 import { addDoc, collection, getDocs, onSnapshot } from "firebase/firestore";
-import { dbService, storageServise } from "../fbase";
+import { dbService, storageService} from "../fbase";
 import Tweet from "../components/Tweet";
 import { v4 as uuidv4 } from 'uuid'; //아이디 라이브러리, 파이어스토리지 문서 아이디 부여 위함 uuidv4();
-
+import { ref, uploadBytesResumable, getDownloadURL, uploadBytes, uploadString } from "firebase/storage";
 
 const Home = ({ userObj }) => {
     const [tweet, setTweet] = useState(""); //텍스트를 상태로 관리하기 위해 useState 사용
@@ -37,7 +37,19 @@ const Home = ({ userObj }) => {
             createId: userObj.uid,
         });
        setTweet(""); */
-       storageServise.ref().child(`${userObj.uid}/${uuidv4()}`); //스토리지 폴더(사용자 아이디), 파일 이름 생성(uuid)
+
+   
+        //const storageRef = ref(storage, `${userObj.uid}/${uuidv4()}`);
+
+       //const attachmentRef = storageService.ref().child(`${userObj.uid}/${uuidv4()}`);
+        const attachmentRef = ref(storageService, attachment); //스토리지 폴더(사용자 아이디), 파일 이름 생성(uuid)
+        //uploadBytes(attachmentRef, file)
+        //const response = await attachmentRef.uploadString(attachment, "data_url");
+        console.log(attachmentRef);
+        //uploadString(attachmentRef);
+        uploadBytes(attachmentRef, attachment).then((snapshot) => {
+            console.log("Uploaded File-------");
+        });
     };
 
     const onChange = (event) => {
