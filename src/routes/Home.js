@@ -43,7 +43,8 @@ const Home = ({ userObj }) => {
         const response = await uploadBytes(fileRef, File, 'data_url'); //스토리지 업로드
         console.log(response);
 
-        const FileURL = await getDownloadURL(response.ref);
+        const FileURL = await getDownloadURL(ref(storageService, fileRef));
+        console.log(FileURL);
         const content = {
             text: tweet,
             created: Date.now(),
