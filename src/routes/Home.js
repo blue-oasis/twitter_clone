@@ -37,29 +37,23 @@ const Home = ({ userObj }) => {
             createId: userObj.uid,
         });
        setTweet(""); */
-        const file = event.target.files;
-        if(!file)  return null;
-   
-        //const storageRef = ref(storage, `${userObj.uid}/${uuidv4()}`);
+       
+        const fileRef = ref(storageService, `${userObj.uid}/${uuidv4()}`); //스토리지 폴더(사용자 아이디), 파일 이름 생성(uuid)
+        console.log(fileRef);
+        const response = await uploadBytes(fileRef, File, 'data_url'); //스토리지 업로드
+        console.log(response);
 
-       //const attachmentRef = storageService.ref().child(`${userObj.uid}/${uuidv4()}`);
-        const attachmentRef = ref(storageService, `${userObj.uid}/${uuidv4()}`); //스토리지 폴더(사용자 아이디), 파일 이름 생성(uuid)
-        const uploadTask = uploadBytes(attachmentRef, uuidv4());
-        uploadTask.then((snapshot) => {
-            event.target.value = "";
-            getDownloadURL(snapshot.ref).then((downloadURL) => {
-                console.log("파일 위치", downloadURL);
-                setAttachment(downloadURL);
-                //로그도 안뜨고 오류코드도 안떠 https://gryffindor0ne.github.io/dev-log/2022-09-12-React-Image-upload/
-            });
-        });
-        //uploadBytes(attachmentRef, file)
-        //const response = await attachmentRef.uploadString(attachment, "data_url");
-        console.log(attachmentRef);
-        //uploadString(attachmentRef);
-        uploadBytes(attachmentRef, attachment).then((snapshot) => {
-            console.log("Uploaded File-------");
-        });
+        const FileURL = await getDownloadURL(response.ref);
+        const content = {
+            text: tweet,
+            created: Date.now(),
+            createId: userObj.uid,
+            FileURL,
+        }
+        await addDoc(collection(dbService, 'tweets'),content);
+        setTweet("");
+        setAttachment("");
+      
     };
 
     const onChange = (event) => {
