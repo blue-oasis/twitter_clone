@@ -43,7 +43,7 @@ const Home = ({ userObj }) => {
         const response = await uploadBytes(fileRef, File, 'data_url'); //스토리지 업로드
         console.log(response);
 
-        const FileURL = await getDownloadURL(ref(storageService, fileRef));
+        const FileURL = await getDownloadURL(ref(storageService, fileRef)); //다운로드 주소인데 잘못됐니 ? ?? 
         console.log(FileURL);
         const content = {
             text: tweet,
